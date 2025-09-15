@@ -1,5 +1,3 @@
-import kotlin.properties.Delegates
-
 //делим множество пополам, сложность O(log n)
 //при 100 элементах всего 7 шагов
 fun binarySearch(list: List<Int>, item: Int): Int? {
@@ -100,7 +98,7 @@ abstract class VersionControl() {
 
 }
 
-class Solution : VersionControl() {
+class Solution2 : VersionControl() {
     override fun firstBadVersion(n: Int): Int {
         var startIndex = 1
         var finishIndex = n
@@ -115,5 +113,44 @@ class Solution : VersionControl() {
             }
         }
         return startIndex
+    }
+}
+
+/**
+ * 441. Arranging Coins
+ * You have n coins and you want to build a staircase with these coins. The staircase consists of k rows where the ith row has exactly i coins. The last row of the staircase may be incomplete.
+ *
+ * Given the integer n, return the number of complete rows of the staircase you will build.
+ *
+ *
+ *
+ * Example 1:
+ *
+ *
+ * Input: n = 5
+ * Output: 2
+ * Explanation: Because the 3rd row is incomplete, we return 2.
+ * Example 2:
+ *
+ *
+ * Input: n = 8
+ * Output: 3
+ * Explanation: Because the 4th row is incomplete, we return 3.
+ */
+
+class Solution {
+    fun arrangeCoins(n: Int): Int {
+        var startIndex = 1
+        var finishIndex = n
+        while (startIndex <= finishIndex) {
+            val lastElem = startIndex + (finishIndex - startIndex) / 2
+            val sumOfRows = (1 + lastElem).toDouble() * lastElem / 2
+            when {
+                sumOfRows == n.toDouble() -> return lastElem
+                sumOfRows > n -> finishIndex = lastElem - 1
+                else -> startIndex = lastElem + 1
+            }
+        }
+        return finishIndex
     }
 }
