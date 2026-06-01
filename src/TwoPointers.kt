@@ -159,3 +159,21 @@ fun mergeOn2(nums1: IntArray, m: Int, nums2: IntArray, n: Int): Unit {
     }
 }
 
+fun sortedSquares(nums: IntArray): IntArray {
+    val resArray = IntArray(nums.size)
+    var p1 = 0
+    var p2 = nums.size - 1
+    var p = nums.size - 1
+    while (p1<=p2) {
+        val leftSquare = nums[p1] * nums[p1]
+        val rightSquare = nums[p2] * nums[p2]
+        if (leftSquare > rightSquare) {
+            resArray[p--] = leftSquare
+            p1++
+        } else {
+            resArray[p--] = rightSquare
+            p2--
+        }
+    }
+    return resArray
+}
