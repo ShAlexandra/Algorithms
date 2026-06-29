@@ -347,14 +347,72 @@ fun moveZeroes(nums: IntArray): Unit {
 fun twoSum(numbers: IntArray, target: Int): IntArray {
     var p1 = 0
     var p2 = numbers.lastIndex
-    var sum = numbers[p1]+numbers[p2]
-    while (sum!=target) {
-        if (sum>target) {
+    var sum = numbers[p1] + numbers[p2]
+    while (sum != target) {
+        if (sum > target) {
             p2--
         } else {
             p1++
         }
-        sum = numbers[p1]+numbers[p2]
+        sum = numbers[p1] + numbers[p2]
     }
-    return intArrayOf(p1+1, p2+1)
+    return intArrayOf(p1 + 1, p2 + 1)
+}
+
+
+/**
+ * 15. 3Sum
+ * Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+ *
+ * Notice that the solution set must not contain duplicate triplets.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: nums = [-1,0,1,2,-1,-4]
+ * Output: [[-1,-1,2],[-1,0,1]]
+ * Explanation:
+ * nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.
+ * nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0.
+ * nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0.
+ * The distinct triplets are [-1,0,1] and [-1,-1,2].
+ * Notice that the order of the output and the order of the triplets does not matter.
+ * Example 2:
+ *
+ * Input: nums = [0,1,1]
+ * Output: []
+ * Explanation: The only possible triplet does not sum up to 0.
+ * Example 3:
+ *
+ * Input: nums = [0,0,0]
+ * Output: [[0,0,0]]
+ * Explanation: The only possible triplet sums up to 0.
+ */
+fun threeSum(nums: IntArray): List<List<Int>> {
+
+    val listResult = mutableListOf<List<Int>>()
+    nums.sort()
+
+    for (i in 0..<nums.size - 2) {
+        if (i == 0 || nums[i] != nums[i - 1] || nums[i] < 0) {
+            var p1 = i + 1
+            var p2 = nums.size - 1
+            while (p1 < p2) {
+                if (nums[p1] + nums[p2] == -nums[i]) {
+                    listResult.add(listOf(nums[i], nums[p1], nums[p2]))
+                    while (p1 < p2 && nums[p1] == nums[p1 + 1]) p1++
+                    while (p1 < p2 && nums[p2] == nums[p2 - 1]) p2--
+                    p1++
+                    p2--
+                } else {
+                    if (nums[p1] + nums[p2] > -nums[i]) {
+                        p2--
+                    } else
+                        p1++
+                }
+            }
+        }
+    }
+    return listResult
 }
