@@ -186,14 +186,15 @@ fun isValidSudoku(board: Array<CharArray>): Boolean {
  */
 
 fun rotate(matrix: Array<IntArray>): Unit {
-    for (i in 0..< matrix.size / 2) {
+    for (i in 0..<matrix.size / 2) {
         for (j in i..matrix.size - 2 - i) {
             var firstIndex = i
             var secondIndex = j
             var k = 0
             do {
                 val p = matrix[secondIndex][matrix.size - 1 - firstIndex]
-                matrix[secondIndex][matrix.size - 1 - firstIndex] = if (firstIndex==i && secondIndex == j) matrix[firstIndex][secondIndex] else k
+                matrix[secondIndex][matrix.size - 1 - firstIndex] =
+                    if (firstIndex == i && secondIndex == j) matrix[firstIndex][secondIndex] else k
                 k = p
                 val c = secondIndex
                 secondIndex = matrix.size - 1 - firstIndex
@@ -201,4 +202,94 @@ fun rotate(matrix: Array<IntArray>): Unit {
             } while (firstIndex != i || secondIndex != j)
         }
     }
+}
+
+/**
+ * 54. Spiral Matrix
+ * Given an m x n matrix, return all elements of the matrix in spiral order.
+ *
+ *
+ *
+ * Example 1:
+ *
+ *
+ * Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
+ * Output: [1,2,3,6,9,8,7,4,5]
+ * Example 2:
+ *
+ *
+ * Input: matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
+ * Output: [1,2,3,4,8,12,11,10,9,5,6,7]
+ */
+fun spiralOrderMath(matrix: Array<IntArray>): List<Int> {
+    var horizonSize = matrix.size - 1
+    var verticalSize = matrix[0].size - 1
+    val pMax = (horizonSize + 1) * (verticalSize + 1)
+    val result = MutableList(pMax) { 0 }
+    var p = 0
+    var horizon = 0
+    var vertical = 0
+    while (p < pMax) {
+        while (p < pMax && vertical <= verticalSize - horizon) {
+            result[p++] = matrix[horizon][vertical++]
+        }
+        horizon++
+        vertical--
+
+        while (p < pMax && horizon <= horizonSize - (verticalSize - vertical)) {
+            result[p++] = matrix[horizon++][vertical]
+        }
+
+        vertical--
+        horizon--
+        while (p < pMax && vertical >= horizonSize - horizon) {
+            result[p++] = matrix[horizon][vertical--]
+        }
+
+        horizon--
+        vertical++
+        while (p < pMax && horizon > verticalSize - (verticalSize - vertical)) {
+            result[p++] = matrix[horizon--][vertical]
+        }
+
+        vertical++
+        horizon++
+    }
+    return result
+}
+
+fun spiralOrderPointers(matrix: Array<IntArray>): List<Int> {
+    var top = 0
+    var bottom = matrix.lastIndex
+    var left = 0
+    var right = matrix[0].lastIndex
+    val pMax = (bottom + 1) * (right + 1)
+    val result = MutableList(pMax) { 0 }
+
+    var p = 0
+    while (top <= bottom && left <= right) {
+        for (i in left..right) {
+                result[p++] = matrix[top][i]
+        }
+        top++
+        if (top>bottom) break
+
+        for (i in top..bottom) {
+                result[p++] = matrix[i][right]
+        }
+        right--
+        if (left>right) break
+
+        for (i in right downTo left) {
+                result[p++] = matrix[bottom][i]
+        }
+        bottom--
+        if (top>bottom) break
+
+        for (i in bottom downTo top) {
+                result[p++] = matrix[i][left]
+        }
+        left++
+    }
+    return result
 }
