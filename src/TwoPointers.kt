@@ -344,7 +344,7 @@ fun moveZeroes(nums: IntArray): Unit {
  * The tests are generated such that there is exactly one solution.
  */
 
-fun twoSum(numbers: IntArray, target: Int): IntArray {
+fun twoSum2(numbers: IntArray, target: Int): IntArray {
     var p1 = 0
     var p2 = numbers.lastIndex
     var sum = numbers[p1] + numbers[p2]
