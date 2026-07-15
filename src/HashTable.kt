@@ -84,11 +84,11 @@ fun isValidSudokuHashSet(board: Array<CharArray>): Boolean {
         for (j in 0..<board.size) {
             if (board[i][j].isDigit() && !hashRow.add(board[i][j])) return false
             if (board[j][i].isDigit() && !hashColumn.add(board[j][i])) return false
-            if (i%3==0 && j%3 ==0) {
+            if (i % 3 == 0 && j % 3 == 0) {
                 val hashBlock = hashSetOf<Char>()
 
-                for (k in i..<i+3) {
-                    for (h in j..<j+3) {
+                for (k in i..<i + 3) {
+                    for (h in j..<j + 3) {
                         if (board[k][h].isDigit() && !hashBlock.add(board[k][h])) return false
                     }
                 }
@@ -126,8 +126,8 @@ fun isValidSudokuHashSet(board: Array<CharArray>): Boolean {
 fun twoSum(nums: IntArray, target: Int): IntArray {
     val hashMap = mutableMapOf<Int, Int>()
     for (i in nums.indices) {
-        val value = hashMap[target-nums[i]]
-        if (value!=null) return intArrayOf(value, i)
+        val value = hashMap[target - nums[i]]
+        if (value != null) return intArrayOf(value, i)
         hashMap[nums[i]] = i
     }
     return intArrayOf()
@@ -177,11 +177,77 @@ fun isIsomorphic(s: String, t: String): Boolean {
     val mapT = mutableMapOf<Char, Int>()
 
     for (i in s.indices) {
-        if (mapS[s[i]]!=mapT[t[i]]) {
+        if (mapS[s[i]] != mapT[t[i]]) {
             return false
         }
-        mapS[s[i]]=i
-        mapT[t[i]]=i
+        mapS[s[i]] = i
+        mapT[t[i]] = i
     }
     return true
+}
+
+/**
+ * 13. Roman to Integer
+ * Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
+ *
+ * Symbol       Value
+ * I             1
+ * V             5
+ * X             10
+ * L             50
+ * C             100
+ * D             500
+ * M             1000
+ * For example, 2 is written as II in Roman numeral, just two ones added together. 12 is written as XII, which is simply X + II. The number 27 is written as XXVII, which is XX + V + II.
+ *
+ * Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not IIII. Instead, the number four is written as IV. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as IX. There are six instances where subtraction is used:
+ *
+ * I can be placed before V (5) and X (10) to make 4 and 9.
+ * X can be placed before L (50) and C (100) to make 40 and 90.
+ * C can be placed before D (500) and M (1000) to make 400 and 900.
+ * Given a roman numeral, convert it to an integer.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: s = "III"
+ * Output: 3
+ * Explanation: III = 3.
+ * Example 2:
+ *
+ * Input: s = "LVIII"
+ * Output: 58
+ * Explanation: L = 50, V= 5, III = 3.
+ * Example 3:
+ *
+ * Input: s = "MCMXCIV"
+ * Output: 1994
+ * Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
+ */
+
+fun romanToInt(s: String): Int {
+    var result = 0
+    for (i in 0..<s.length - 1) {
+        val current = value(s[i])
+        val next = value(s[i + 1])
+        if (next > current) {
+            result -= current
+        } else {
+            result += current
+        }
+    }
+    result += value(s.last())
+    return result
+}
+
+fun value(c: Char) = when (c) {
+    'I' -> 1
+    'V' -> 5
+    'X' -> 10
+    'L' -> 50
+    'C' -> 100
+    'D' -> 500
+    'M' -> 1000
+    else -> -1
 }
