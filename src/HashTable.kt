@@ -251,3 +251,51 @@ fun value(c: Char) = when (c) {
     'M' -> 1000
     else -> -1
 }
+
+/**
+ * 242. Valid Anagram
+ * Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: s = "anagram", t = "nagaram"
+ *
+ * Output: true
+ *
+ * Example 2:
+ *
+ * Input: s = "rat", t = "car"
+ *
+ * Output: false
+ *
+ *
+ *
+ * Constraints:
+ *
+ * 1 <= s.length, t.length <= 5 * 104
+ * s and t consist of lowercase English letters.
+ */
+fun isAnagram(s: String, t: String): Boolean {
+    if (s.length != t.length) return false
+    val checkMap = mutableMapOf<Char, Int>()
+    s.forEach {
+        val sChar = checkMap[it]
+        if (sChar != null) {
+            checkMap[it] = sChar + 1
+        } else {
+            checkMap[it] = 1
+        }
+    }
+
+    t.forEach {
+        val checkChar = checkMap[it] ?: return false
+        if (checkChar == 0) {
+            return false
+        }
+        checkMap[it] = checkChar - 1
+    }
+
+    return true
+}
