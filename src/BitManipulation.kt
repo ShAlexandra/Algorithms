@@ -177,7 +177,7 @@ fun reverseBits(n: Int): Int {
  *
  * The input binary string 1111111111111111111111111111101 has a total of thirty set bits.
  */
-fun hammingWeight(n: Int): Int {
+fun hammingWeightEnumeration(n: Int): Int {
     var pr = n
     var count = 0
     for (i in 0..31) {
@@ -185,6 +185,16 @@ fun hammingWeight(n: Int): Int {
             count++
         }
         pr = pr ushr 1
+    }
+    return count
+}
+
+fun hammingWeight(n: Int): Int {
+    var pr = n
+    var count = 0
+    while (pr!=0) {
+        pr = pr and (pr-1)
+        count++
     }
     return count
 }
