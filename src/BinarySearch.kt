@@ -308,20 +308,20 @@ fun searchRange(nums: IntArray, target: Int): IntArray {
             while (leftStart <= leftFinish) {
                 val leftMid = leftStart + (leftFinish - leftStart) / 2
                 if (nums[leftMid] == target) {
-                    leftFinish = leftMid-1
+                    leftFinish = leftMid - 1
                 } else {
                     leftStart = leftMid + 1
                 }
             }
 
             var rightStart = mid
-            var rightFinish=finish
-            while (rightStart<=rightFinish) {
-                val rightMid = rightStart+(rightFinish-rightStart)/2
-                if (nums[rightMid]==target){
-                    rightStart = rightMid+1
+            var rightFinish = finish
+            while (rightStart <= rightFinish) {
+                val rightMid = rightStart + (rightFinish - rightStart) / 2
+                if (nums[rightMid] == target) {
+                    rightStart = rightMid + 1
                 } else {
-                    rightFinish = rightMid-1
+                    rightFinish = rightMid - 1
                 }
             }
             return intArrayOf(leftStart, rightFinish)
@@ -329,4 +329,52 @@ fun searchRange(nums: IntArray, target: Int): IntArray {
         mid = start + (finish - start) / 2
     }
     return intArrayOf(-1, -1)
+}
+
+/**
+ * 74. Search a 2D Matrix
+ * You are given an m x n integer matrix matrix with the following two properties:
+ *
+ * Each row is sorted in non-decreasing order.
+ * The first integer of each row is greater than the last integer of the previous row.
+ * Given an integer target, return true if target is in matrix or false otherwise.
+ *
+ * You must write a solution in O(log(m * n)) time complexity.
+ *
+ *
+ *
+ * Example 1:
+ *
+ *
+ * Input: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3
+ * Output: true
+ * Example 2:
+ *
+ *
+ * Input: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 13
+ * Output: false
+ */
+fun searchMatrix(matrix: Array<IntArray>, target: Int): Boolean {
+    var startRow = 0
+    var finishRow = matrix.size - 1
+    while (startRow <= finishRow) {
+        val midRow = startRow + (finishRow - startRow) / 2
+        if (matrix[midRow][0] < target) {
+            startRow = midRow + 1
+        } else if (matrix[midRow][0] > target) {
+            finishRow = midRow - 1
+        } else return true
+    }
+    if (finishRow < 0) return false
+    var start = 0
+    var finish = matrix[0].size - 1
+    while (start <= finish) {
+        val mid = start + (finish - start) / 2
+        if (matrix[finishRow][mid] < target) {
+            start = mid + 1
+        } else if (matrix[finishRow][mid] > target) {
+            finish = mid - 1
+        } else return true
+    }
+    return false
 }
