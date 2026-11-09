@@ -116,3 +116,64 @@ fun pivotIndex(nums: IntArray): Int {
     }
     return -1
 }
+
+/**
+ * 304. Range Sum Query 2D - Immutable
+ * Given a 2D matrix matrix, handle multiple queries of the following type:
+ *
+ * Calculate the sum of the elements of matrix inside the rectangle defined by its upper left corner (row1, col1) and lower right corner (row2, col2).
+ * Implement the NumMatrix class:
+ *
+ * NumMatrix(int[][] matrix) Initializes the object with the integer matrix matrix.
+ * int sumRegion(int row1, int col1, int row2, int col2) Returns the sum of the elements of matrix inside the rectangle defined by its upper left corner (row1, col1) and lower right corner (row2, col2).
+ * You must design an algorithm where sumRegion works on O(1) time complexity.
+ */
+class NumMatrix(matrix: Array<IntArray>) {
+
+    val prefixMatrix = Array(matrix.size+1){IntArray(matrix[0].size+1)}
+
+    init {
+        for (i in 1..matrix.size) {
+            for (j in 1..matrix[0].size) {
+                prefixMatrix[i][j] = prefixMatrix[i-1][j]+prefixMatrix[i][j-1]-prefixMatrix[i-1][j-1]+matrix[i-1][j-1]
+            }
+        }
+    }
+
+    fun sumRegion(row1: Int, col1: Int, row2: Int, col2: Int): Int {
+        return prefixMatrix[row2+1][col2+1]-prefixMatrix[row2+1][col1]-prefixMatrix[row1][col2+1]+prefixMatrix[row1][col1]
+    }
+
+}
+
+/**
+ * 560. Subarray Sum Equals K
+ * Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k.
+ *
+ * A subarray is a contiguous non-empty sequence of elements within an array.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: nums = [1,1,1], k = 2
+ * Output: 2
+ * Example 2:
+ *
+ * Input: nums = [1,2,3], k = 3
+ * Output: 2
+ */
+
+fun subarraySum(nums: IntArray, k: Int): Int {
+    val prMap = mutableMapOf<Int, Int>()
+    prMap[0]=1
+    var prefix = 0
+    var count = 0
+
+    for (i in 0..<nums.size) {
+        prefix+=nums[i]
+        count+=prMap[prefix-k]?:0
+        prMap[prefix] = prMap[prefix]?.plus(1) ?: 1
+    }
+    return count
+}
