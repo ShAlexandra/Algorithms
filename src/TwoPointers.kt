@@ -565,14 +565,14 @@ fun compareVersion(version1: String, version2: String): Int {
         var currentV2 = 0
         while (readV1 < version1.length && version1[readV1] != '.') {
 
-                currentV1 = currentV1 * 10 + version1[readV1].digitToInt()
+            currentV1 = currentV1 * 10 + version1[readV1].digitToInt()
 
             readV1++
         }
         readV1++
         while (readV2 < version2.length && version2[readV2] != '.') {
 
-                currentV2 = currentV2 * 10 + version2[readV2].digitToInt()
+            currentV2 = currentV2 * 10 + version2[readV2].digitToInt()
 
             readV2++
         }
@@ -612,19 +612,137 @@ fun compareVersion(version1: String, version2: String): Int {
 fun maxArea(height: IntArray): Int {
     var max = 0
     var p1 = 0
-    var p2 = height.size-1
-    while (p1<p2) {
-        if (height[p1]>height[p2]) {
-            if (height[p2]*(p2-p1)>max) {
+    var p2 = height.size - 1
+    while (p1 < p2) {
+        if (height[p1] > height[p2]) {
+            if (height[p2] * (p2 - p1) > max) {
                 max = height[p2] * (p2 - p1)
             }
             p2--
         } else {
-            if (height[p1]*(p2-p1)>max) {
+            if (height[p1] * (p2 - p1) > max) {
                 max = height[p1] * (p2 - p1)
             }
             p1++
         }
     }
     return max
+}
+
+/**
+ * 75. Sort Colors
+ * Medium
+ * Topics
+ * premium lock icon
+ * Companies
+ * Hint
+ * You are given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
+ *
+ * We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively.
+ *
+ * You must solve this problem without using the library's sort function.
+ *
+ *
+ *
+ * Example 1:
+ *
+ * Input: nums = [2,0,2,1,1,0]
+ *
+ * Output: [0,0,1,1,2,2]
+ *
+ * Explanation:
+ *
+ * The array has two 0s, two 1s, and two 2s. Sorting them in-place places all 0s first, then all 1s, then all 2s.
+ *
+ * Example 2:
+ *
+ * Input: nums = [2,0,1]
+ *
+ * Output: [0,1,2]
+ *
+ * Explanation:
+ *
+ * The array has one each of 0, 1, and 2, arranged in-place in the order 0, 1, 2.
+ *
+ *
+ *
+ * Constraints:
+ *
+ * n == nums.length
+ * 1 <= n <= 300
+ * nums[i] is either 0, 1, or 2.
+ */
+fun sortColorsOld(nums: IntArray): Unit {
+    var c0 = 0
+    var c2 = 0
+
+    var pos0 = -1
+    var pos2 = nums.size
+
+    var p0 = 0
+    var p1 = nums.size - 1
+
+    while (p0 <= p1) {
+        val num0 = nums[p0]
+        val num1 = nums[p1]
+        if (num0 == 0 || num1 == 0) {
+            c0++
+            if (p0 != p1 && num0 == num1) c0++
+        }
+        if (num0 == 2 || num1 == 2) {
+            c2++
+            if (p0 != p1 && num0 == num1) c2++
+        }
+        nums[p0] = 1
+        nums[p1] = 1
+        if (c0 > 0) {
+            pos0++
+            nums[pos0] = 0
+            c0--
+        }
+        if (c2 > 0) {
+            pos2--
+            nums[pos2] = 2
+            c2--
+        }
+        p0++
+        p1--
+    }
+    while (c0 > 0) {
+        pos0++
+        nums[pos0] = 0
+        c0--
+    }
+    while (c2 > 0) {
+        pos2--
+        nums[pos2] = 2
+        c2--
+    }
+}
+
+fun sortColors(nums: IntArray): Unit {
+    var low = 0
+    var mid = 0
+    var high = nums.size - 1
+
+    while (mid <= high) {
+        when (nums[mid]) {
+            0 -> {
+                nums.swap(low, mid)
+                low++
+                mid++
+            }
+            1 -> {mid++}
+            2 -> {
+                nums.swap(mid, high)
+                high--
+            }
+        }
+    }
+}
+
+fun IntArray.swap(i: Int, j: Int) {
+    val t = this[i]
+    this[i] = this[j]
+    this[j] = t
 }
