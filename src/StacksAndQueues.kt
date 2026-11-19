@@ -250,3 +250,58 @@ fun minAddToMakeValid(s: String): Int {
     }
     return openP+closeP
 }
+
+/**
+ * 856. Score of Parentheses
+ *
+ * Given a balanced parentheses string s, return the score of the string.
+ *
+ * The score of a balanced parentheses string is based on the following rule:
+ *
+ * "()" has score 1.
+ * AB has score A + B, where A and B are balanced parentheses strings.
+ * (A) has score 2 * A, where A is a balanced parentheses string.
+ *
+ *
+ * Example 1:
+ *
+ * Input: s = "()"
+ * Output: 1
+ * Example 2:
+ *
+ * Input: s = "(())"
+ * Output: 2
+ * Example 3:
+ *
+ * Input: s = "()()"
+ * Output: 2
+ *
+ *
+ * Constraints:
+ *
+ * 2 <= s.length <= 50
+ * s consists of only '(' and ')'.
+ * s is a balanced parentheses string.
+ */
+fun scoreOfParentheses(s: String): Int {
+    val stack = mutableListOf<Int>()
+    var current = 0
+
+
+    for(item in s) {
+        when(item) {
+            '(' -> {
+                stack.add(current)
+                current = 0
+            }
+            ')' -> {
+                if(current==0) {
+                    current = 1 + stack.removeLast()
+                } else {
+                    current = current*2+stack.removeLast()
+                }
+            }
+        }
+    }
+    return current
+}
